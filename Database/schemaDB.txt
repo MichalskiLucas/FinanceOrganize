@@ -1,0 +1,37 @@
+-- Create the database (if it doesn't exist)
+CREATE DATABASE finance_app;
+
+-- Connect to the database
+\c finance_app;
+
+-- 1️⃣ Users table
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,       -- UK: email must be unique
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 2️⃣ Categories table
+CREATE TABLE categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  type VARCHAR(10) NOT NULL CHECK (type IN ('income', 'expense')),
+  color VARCHAR(20),
+  CONSTRAINT uq_category_name_type UNIQUE (name, type)  -- UK: name+type must be unique
+);
+
+-- 3️⃣ Transactions table
+CREATE TABLE transactions (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  category_id INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
+  description VARCHAR(255) NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  type VARCHAR(10) NOT NULL CHECK (type IN ('income', 'expense')),
+  transaction_date DATE NOT NULL,
+  recurring BOOLEAN DEFAULT FALSE,
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
