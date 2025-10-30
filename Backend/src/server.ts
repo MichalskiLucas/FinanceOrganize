@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
 import categoryRoutes from './routes/categoryRoutes';
-// import transactionsRoutes from './routes/transactionRoutes';
+import transactionsRoutes from './routes/transactionsRoutes';
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use('/users', userRoutes);
 app.use('/categories', categoryRoutes);
-// app.use('/transactions', transactionsRoutes);
+app.use('/transactions', transactionsRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
