@@ -17,6 +17,7 @@ export const useLoginStore = create<LoginState>((set, get) => ({
     setEmail: (email) => set({ email }),
     setPassword: (password) => set({ password }),
     setError: (error) => set({ error }),
+    
     login: async () => {
         set({ error: "" });
         try {
@@ -35,8 +36,11 @@ export const useLoginStore = create<LoginState>((set, get) => ({
             }
 
             const data = await response.json();
-            console.log("Login bem-sucedido:", data);
-            alert("Login realizado com sucesso!");
+
+            localStorage.setItem("token", data.token);
+
+            window.location.href = "/home";
+
         } catch (err: unknown) {
             if (err instanceof Error) {
                 set({ error: err.message });
